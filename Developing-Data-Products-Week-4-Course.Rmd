@@ -1,0 +1,45 @@
+---
+title: "Developing-Data-Products-Week-4-Course"
+author: "Radu Popescu"
+date: "16/12/2020"
+output: 
+  slidy_presentation: default
+  ioslides_presentation: default
+  html_document:
+    number_sections: yes
+    toc: yes
+mode: selfcontained
+job:  Cars
+subtitle: Variables and MPG
+highlighter: highlight.js
+widgets: bootstrap
+---
+
+### Source
+Henderson and Velleman (1981), Building multiple regression models interactively. Biometrics, 37, 391-411.
+```{r}
+library(datasets)
+head(mtcars, 3)
+```
+
+---
+
+## Analysis - Main Code
+
+```
+  formulaTextPoint <- reactive({
+    paste("mpg ~", "as.integer(", input$variable, ")")  })
+  
+  fit <- reactive({
+    lm(as.formula(formulaTextPoint()), data=mpgData)  })
+  ...
+  output$fit <- renderPrint({
+    summary(fit()) })
+  
+  output$mpgPlot <- renderPlot({
+    with(mpgData, {
+      plot(as.formula(formulaTextPoint()))
+      abline(fit(), col=2)
+    })  })
+```
+
